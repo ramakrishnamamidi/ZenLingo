@@ -38,7 +38,4 @@ flutter:
   generate: true
   assets:
     - assets/data/
-  fonts:
-    - family: NotoSansJP
-      fonts:
-        - asset: assets/fonts/NotoSansJP-Regular.ttf
+  # fonts added in Phase 2 when NotoSansJP-Regular.ttf is downloaded
