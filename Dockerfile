@@ -1,2 +1,2 @@
-FROM cirrusci/flutter:stable
-WORKDIR /host
+FROM ghcr.io/cirruslabs/flutter:stable
+WORKDIR /app
