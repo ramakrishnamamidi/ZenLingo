@@ -49,4 +49,14 @@ class SrsDao extends DatabaseAccessor<AppDatabase> with _$SrsDaoMixin {
     final row = await query.getSingle();
     return row.read(count) ?? 0;
   }
+
+  Future<int> countMasteredCards() async {
+    // A card is mastered when retrievability > 0.85
+    final count = vocabularyCards.id.count();
+    final query = selectOnly(vocabularyCards)
+      ..addColumns([count])
+      ..where(vocabularyCards.retrievability.isBiggerThanValue(0.85));
+    final row = await query.getSingle();
+    return row.read(count) ?? 0;
+  }
 }
