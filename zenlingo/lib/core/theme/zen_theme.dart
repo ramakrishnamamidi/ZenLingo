@@ -26,7 +26,7 @@ class ZenTheme {
       bodyMedium: TextStyle(fontSize: 16, height: 1.6),
       labelSmall: TextStyle(fontSize: 11, letterSpacing: 1.2, color: Color(0xFF8A8A8A)),
     ),
-    cardTheme: const CardTheme(
+    cardTheme: const CardThemeData(
       color: bgSurface,
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
