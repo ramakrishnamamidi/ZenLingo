@@ -37,7 +37,7 @@ class FsrsAlgorithm implements SrsAlgorithm {
     return card.copyWith(
       stability: s,
       difficulty: d,
-      retrievability: 1.0,
+      retrievability: exp(-interval.toDouble() / s),
       reps: 1,
       interval: interval,
       lastReviewDate: Value(DateTime.now()),
@@ -80,7 +80,7 @@ class FsrsAlgorithm implements SrsAlgorithm {
     return card.copyWith(
       stability: clampedS,
       difficulty: newD,
-      retrievability: exp(-1.0 / clampedS),
+      retrievability: exp(-interval.toDouble() / clampedS),
       reps: card.reps + 1,
       interval: interval,
       lastReviewDate: Value(DateTime.now()),

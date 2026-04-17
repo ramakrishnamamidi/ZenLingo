@@ -23,4 +23,9 @@ class VocabularyCards extends Table {
       dateTime().withDefault(currentDateAndTime)();
   DateTimeColumn get lastReviewDate => dateTime().nullable()();
   TextColumn get tags => text().withDefault(const Constant('[]'))();
+
+  @override
+  List<Set<Column>> get uniqueKeys => [
+        {word, languageCode},
+      ];
 }

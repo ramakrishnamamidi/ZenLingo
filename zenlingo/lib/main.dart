@@ -22,14 +22,14 @@ class ZenApp extends StatelessWidget {
   }
 }
 
-class _NavShell extends StatefulWidget {
+class _NavShell extends ConsumerStatefulWidget {
   const _NavShell();
 
   @override
-  State<_NavShell> createState() => _NavShellState();
+  ConsumerState<_NavShell> createState() => _NavShellState();
 }
 
-class _NavShellState extends State<_NavShell> {
+class _NavShellState extends ConsumerState<_NavShell> {
   int _index = 0;
 
   static const List<Widget> _pages = [

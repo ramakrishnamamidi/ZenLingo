@@ -40,17 +40,12 @@ class VocabularyLoader {
   }
 
   Future<void> insertAll(List<VocabularyCardsCompanion> entries) async {
-    for (final entry in entries) {
-      final existing = await (_db.select(_db.vocabularyCards)
-            ..where(
-              (c) =>
-                  c.word.equals(entry.word.value) &
-                  c.languageCode.equals(entry.languageCode.value),
-            ))
-          .getSingleOrNull();
-      if (existing == null) {
-        await _db.into(_db.vocabularyCards).insert(entry);
-      }
-    }
+    await _db.batch((batch) {
+      batch.insertAll(
+        _db.vocabularyCards,
+        entries,
+        mode: InsertMode.insertOrIgnore,
+      );
+    });
   }
 }
