@@ -14,6 +14,7 @@ import 'daos/srs_dao.dart';
 import 'daos/session_dao.dart';
 import 'daos/stroke_dao.dart';
 import 'daos/chat_dao.dart';
+import '../loaders/vocabulary_loader.dart';
 
 part 'app_database.g.dart';
 
@@ -22,7 +23,9 @@ part 'app_database.g.dart';
   daos: [SrsDao, SessionDao, StrokeDao, ChatDao],
 )
 class AppDatabase extends _$AppDatabase {
-  AppDatabase(super.e);
+  final bool seedOnCreate;
+
+  AppDatabase(super.e, {this.seedOnCreate = true});
 
   @override
   int get schemaVersion => 1;
@@ -33,8 +36,8 @@ class AppDatabase extends _$AppDatabase {
       // All new columns must be nullable to avoid breaking existing records
     },
     beforeOpen: (details) async {
-      if (details.wasCreated) {
-        // VocabularyLoader seeding added in Task 9
+      if (details.wasCreated && seedOnCreate) {
+        await VocabularyLoader(this).seedFromAssets();
       }
     },
   );
