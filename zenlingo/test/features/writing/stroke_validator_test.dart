@@ -33,7 +33,14 @@ void main() {
       const Offset(0.5 * 280, 0.9 * 280),
     ];
     final score = validator.validate(userStroke, _hLine(), _canvasSize);
+    expect(score, inInclusiveRange(0.0, 1.0));
+    expect(score, lessThan(AppConfig.strokeCorrectThreshold));
     expect(validator.isCorrect(score), isFalse);
+  });
+
+  test('empty stroke returns 0.0', () {
+    final score = validator.validate([], _hLine(), _canvasSize);
+    expect(score, 0.0);
   });
 
   test('single-point stroke returns 0.0', () {
