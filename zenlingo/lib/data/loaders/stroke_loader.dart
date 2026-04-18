@@ -31,8 +31,9 @@ class StrokeLoader {
             strokeCount: strokes.length,
           ),
         );
-      } catch (_) {
-        // skip missing or malformed assets
+      } catch (e, st) {
+        // skip missing or malformed assets in production; surface in debug
+        assert(false, 'StrokeLoader: failed to seed $path — $e\n$st');
       }
     }
   }
