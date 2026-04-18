@@ -13,4 +13,8 @@ class StrokeDao extends DatabaseAccessor<AppDatabase> with _$StrokeDaoMixin {
           ..where((t) => t.character.equals(character)))
         .getSingleOrNull();
   }
+
+  Future<void> insertTemplate(StrokeTemplatesCompanion entry) {
+    return into(strokeTemplates).insertOnConflictUpdate(entry);
+  }
 }

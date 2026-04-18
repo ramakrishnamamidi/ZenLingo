@@ -15,6 +15,7 @@ import 'daos/session_dao.dart';
 import 'daos/stroke_dao.dart';
 import 'daos/chat_dao.dart';
 import '../loaders/vocabulary_loader.dart';
+import '../loaders/stroke_loader.dart';
 
 part 'app_database.g.dart';
 
@@ -38,6 +39,7 @@ class AppDatabase extends _$AppDatabase {
     beforeOpen: (details) async {
       if (details.wasCreated && seedOnCreate) {
         await VocabularyLoader(this).seedFromAssets();
+        await StrokeLoader(this).seedFromAssets();
       }
     },
   );
