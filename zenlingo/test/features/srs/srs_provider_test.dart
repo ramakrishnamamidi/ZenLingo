@@ -7,7 +7,6 @@ import 'package:zenlingo/core/providers/srs_algorithm_provider.dart';
 import 'package:zenlingo/core/srs/fsrs_algorithm.dart';
 import 'package:zenlingo/core/srs/srs_algorithm.dart';
 import 'package:zenlingo/data/database/app_database.dart';
-import 'package:zenlingo/data/database/daos/srs_dao.dart';
 import 'package:zenlingo/features/srs/providers/srs_provider.dart';
 
 VocabularyCardsCompanion _card({required String word, DateTime? nextReview}) =>

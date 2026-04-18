@@ -1,4 +1,3 @@
-import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zenlingo/core/srs/srs_algorithm.dart';
 import 'package:zenlingo/core/srs/sm2_algorithm.dart';
