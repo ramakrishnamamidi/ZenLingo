@@ -28,9 +28,15 @@ class DashboardStats {
       heatmapData[key] = (heatmapData[key] ?? 0) + s.cardsReviewed;
     }
 
-    // Compute streak: consecutive days backward from today
+    // Compute streak: consecutive days backward from today.
+    // If no session yet today, start from yesterday so streak survives overnight.
     int streak = 0;
     var day = DateTime.now();
+    final todayKey =
+        '${day.year}-${day.month.toString().padLeft(2, '0')}-${day.day.toString().padLeft(2, '0')}';
+    if ((heatmapData[todayKey] ?? 0) == 0) {
+      day = day.subtract(const Duration(days: 1));
+    }
     for (int i = 0; i < 365; i++) {
       final key =
           '${day.year}-${day.month.toString().padLeft(2, '0')}-${day.day.toString().padLeft(2, '0')}';

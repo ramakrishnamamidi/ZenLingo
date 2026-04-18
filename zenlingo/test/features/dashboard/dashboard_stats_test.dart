@@ -70,6 +70,20 @@ void main() {
       expect(stats.masteryPercent, 0.0);
     });
 
+    test('streak survives overnight when no session today yet', () {
+      final today = DateTime.now();
+      final stats = DashboardStats.fromData(
+        sessions: [
+          // yesterday and the day before — no session today
+          _session(date: today.subtract(const Duration(days: 1)), cards: 10),
+          _session(date: today.subtract(const Duration(days: 2)), cards: 8),
+        ],
+        totalCards: 30,
+        masteredCards: 10,
+      );
+      expect(stats.streakDays, 2); // streak still 2, not 0
+    });
+
     test('heatmapData groups sessions by date key', () {
       final today = DateTime.now();
       final stats = DashboardStats.fromData(

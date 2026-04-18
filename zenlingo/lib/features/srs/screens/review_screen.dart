@@ -44,6 +44,22 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen> {
   }
 
   @override
+  void dispose() {
+    if (!_sessionRecorded && _cardsReviewed > 0) {
+      _sessionRecorded = true;
+      // Fire-and-forget: records partial session when user backs out
+      ref.read(sessionDaoProvider).insertSession(
+        ReviewSessionsCompanion.insert(
+          sessionDate: DateTime.now(),
+          cardsReviewed: _cardsReviewed,
+          correctCount: _correctCount,
+        ),
+      );
+    }
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final asyncCards = ref.watch(srsReviewSessionProvider);
 
