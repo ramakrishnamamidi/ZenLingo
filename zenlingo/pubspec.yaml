@@ -38,4 +38,7 @@ flutter:
   generate: true
   assets:
     - assets/data/
+    - assets/strokes/hiragana/
+    - assets/strokes/katakana/
+    - assets/strokes/kanji/n5/
   # fonts added in Phase 2 when NotoSansJP-Regular.ttf is downloaded
