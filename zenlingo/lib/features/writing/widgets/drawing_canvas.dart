@@ -85,6 +85,7 @@ class _StrokePainter extends CustomPainter {
     canvas.drawPath(path, paint);
   }
 
+  // Uses reference equality — parent must provide new list instances on each change.
   @override
   bool shouldRepaint(_StrokePainter old) =>
       old.completedStrokes != completedStrokes ||
