@@ -59,4 +59,8 @@ class SrsDao extends DatabaseAccessor<AppDatabase> with _$SrsDaoMixin {
     final row = await query.getSingle();
     return row.read(count) ?? 0;
   }
+
+  Future<void> resetProgress() async {
+    await delete(vocabularyCards).go();
+  }
 }
