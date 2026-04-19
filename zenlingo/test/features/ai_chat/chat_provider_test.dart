@@ -71,7 +71,7 @@ void main() {
       await container.read(chatProvider.future);
       await container.read(chatProvider.notifier).sendMessage('Hello');
 
-      container.read(chatProvider.notifier).clearHistory();
+      await container.read(chatProvider.notifier).clearHistory();
 
       final messages = await container.read(chatProvider.future);
       expect(messages, isEmpty);

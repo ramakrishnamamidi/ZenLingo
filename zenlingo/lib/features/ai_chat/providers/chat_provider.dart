@@ -81,10 +81,9 @@ class ChatNotifier extends AsyncNotifier<List<ChatMessage>> {
     ));
   }
 
-  void clearHistory() async {
-    final dao = ref.read(chatDaoProvider);
-    await dao.deleteAll();
+  Future<void> clearHistory() async {
     state = const AsyncData([]);
+    await ref.read(chatDaoProvider).deleteAll();
   }
 }
 
