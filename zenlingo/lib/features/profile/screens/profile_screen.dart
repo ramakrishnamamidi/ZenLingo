@@ -96,7 +96,7 @@ class ProfileScreen extends ConsumerWidget {
             .toList(),
       ),
     );
-    if (chosen != null) {
+    if (chosen != null && context.mounted) {
       ref.read(settingsProvider.notifier).setDailyGoal(chosen);
     }
   }
@@ -120,7 +120,7 @@ class ProfileScreen extends ConsumerWidget {
         ],
       ),
     );
-    if (confirmed == true) {
+    if (confirmed == true && context.mounted) {
       await ref.read(settingsProvider.notifier).resetProgress();
     }
   }
