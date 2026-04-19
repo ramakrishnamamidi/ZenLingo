@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/theme/zen_theme.dart';
 import 'features/dashboard/screens/dashboard_screen.dart';
 import 'features/srs/screens/review_screen.dart';
+import 'features/writing/screens/writing_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,8 +37,8 @@ class _NavShellState extends ConsumerState<_NavShell> {
 
   static const List<Widget> _pages = [
     DashboardScreen(),                    // tab 0: 今日
-    _PlaceholderPage(label: '辞書'),      // tab 1: Dictionary — Phase 2b
-    _PlaceholderPage(label: '練習'),      // tab 2: Writing — Phase 3
+    _PlaceholderPage(label: '辞書'),      // tab 1: Dictionary — Phase 4
+    WritingScreen(),                      // tab 2: 練習
     _PlaceholderPage(label: '私'),        // tab 3: Profile — Phase 5
   ];
 
