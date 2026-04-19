@@ -49,7 +49,6 @@ class ChatNotifier extends AsyncNotifier<List<ChatMessage>> {
     ));
 
     final current = state.value ?? [];
-    state = AsyncData([...current, userMsg]);
 
     final assistantMsg = ChatMessage(
       role: 'assistant',
@@ -59,11 +58,18 @@ class ChatNotifier extends AsyncNotifier<List<ChatMessage>> {
     state = AsyncData([...current, userMsg, assistantMsg]);
 
     final buffer = StringBuffer();
-    await for (final chunk in llm.chat(current, userInput)) {
-      buffer.write(chunk);
-      final updated = assistantMsg.copyWith(content: buffer.toString());
+    try {
+      await for (final chunk in llm.chat(current, userInput)) {
+        buffer.write(chunk);
+        final updated = assistantMsg.copyWith(content: buffer.toString());
+        final msgs = state.value ?? [];
+        state = AsyncData(msgs.map((m) => m.timestamp == assistantMsg.timestamp ? updated : m).toList());
+      }
+    } catch (e, st) {
       final msgs = state.value ?? [];
-      state = AsyncData([...msgs.take(msgs.length - 1), updated]);
+      state = AsyncData(msgs.where((m) => m.timestamp != assistantMsg.timestamp).toList());
+      state = AsyncError(e, st);
+      return;
     }
 
     final finalContent = buffer.toString();
@@ -75,7 +81,9 @@ class ChatNotifier extends AsyncNotifier<List<ChatMessage>> {
     ));
   }
 
-  void clearHistory() {
+  void clearHistory() async {
+    final dao = ref.read(chatDaoProvider);
+    await dao.deleteAll();
     state = const AsyncData([]);
   }
 }

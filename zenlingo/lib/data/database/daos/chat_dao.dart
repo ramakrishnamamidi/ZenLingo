@@ -18,4 +18,8 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
           ..limit(limit))
         .get();
   }
+
+  Future<void> deleteAll() {
+    return delete(chatHistory).go();
+  }
 }
