@@ -20,6 +20,9 @@ class SystemTtsService implements TtsService {
 
   @override
   Future<void> speak(String text) async {
+    if (_speaking) {
+      await _tts.stop();
+    }
     _speaking = true;
     await _tts.speak(text);
   }
