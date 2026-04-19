@@ -22,6 +22,7 @@ class _WritingScreenState extends ConsumerState<WritingScreen> {
   Color? _flashColor;
   int _currentStrokeIndex = 0;
   bool _isComplete = false;
+  bool _isProcessing = false;
 
   static const _canvasSize = Size(280, 280);
   static const _validator = DtwStrokeValidator();
@@ -34,36 +35,43 @@ class _WritingScreenState extends ConsumerState<WritingScreen> {
     List<Offset> stroke,
     List<SvgStrokeTemplate> templates,
   ) async {
-    if (_currentStrokeIndex >= templates.length || _isComplete) return;
+    if (_isProcessing || _currentStrokeIndex >= templates.length || _isComplete) return;
+    _isProcessing = true;
+    try {
+      final template = templates[_currentStrokeIndex];
+      final score = _validator.validate(stroke, template, _canvasSize);
+      final correct = _validator.isCorrect(score);
 
-    final template = templates[_currentStrokeIndex];
-    final score = _validator.validate(stroke, template, _canvasSize);
-    final correct = _validator.isCorrect(score);
+      if (correct) {
+        HapticFeedback.lightImpact();
+        setState(() {
+          _completedStrokes.add(stroke);
+          _currentStroke = [];
+          _flashColor = ZenTheme.strokeCorrect;
+          _currentStrokeIndex++;
+        });
+        await Future.delayed(const Duration(milliseconds: 300));
+        if (!mounted) return;
+        setState(() => _flashColor = null);
 
-    if (correct) {
-      HapticFeedback.lightImpact();
-      setState(() {
-        _completedStrokes.add(stroke);
-        _currentStroke = [];
-        _flashColor = ZenTheme.strokeCorrect;
-        _currentStrokeIndex++;
-      });
-      await Future.delayed(const Duration(milliseconds: 300));
-      setState(() => _flashColor = null);
-
-      if (_currentStrokeIndex >= templates.length) {
-        HapticFeedback.mediumImpact();
-        setState(() => _isComplete = true);
-        await _recordPractice();
+        if (_currentStrokeIndex >= templates.length) {
+          HapticFeedback.mediumImpact();
+          if (!mounted) return;
+          setState(() => _isComplete = true);
+          await _recordPractice();
+        }
+      } else {
+        HapticFeedback.heavyImpact();
+        setState(() {
+          _currentStroke = [];
+          _flashColor = ZenTheme.strokeIncorrect;
+        });
+        await Future.delayed(const Duration(milliseconds: 200));
+        if (!mounted) return;
+        setState(() => _flashColor = null);
       }
-    } else {
-      HapticFeedback.heavyImpact();
-      setState(() {
-        _currentStroke = [];
-        _flashColor = ZenTheme.strokeIncorrect;
-      });
-      await Future.delayed(const Duration(milliseconds: 200));
-      setState(() => _flashColor = null);
+    } finally {
+      if (mounted) _isProcessing = false;
     }
   }
 
@@ -85,6 +93,7 @@ class _WritingScreenState extends ConsumerState<WritingScreen> {
       _currentStroke = [];
       _currentStrokeIndex = 0;
       _isComplete = false;
+      _flashColor = null;
     });
   }
 
@@ -133,6 +142,7 @@ class _WritingScreenState extends ConsumerState<WritingScreen> {
                     _completedStrokes.clear();
                     _currentStroke = [];
                     _currentStrokeIndex = 0;
+                    _flashColor = null;
                   }),
                   child: Text(
                     'Clear',
