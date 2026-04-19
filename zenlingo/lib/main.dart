@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/theme/zen_theme.dart';
 import 'features/ai_chat/screens/sensei_screen.dart';
 import 'features/dashboard/screens/dashboard_screen.dart';
+import 'features/profile/screens/profile_screen.dart';
 import 'features/srs/screens/review_screen.dart';
 import 'features/writing/screens/writing_screen.dart';
 
@@ -40,7 +41,7 @@ class _NavShellState extends ConsumerState<_NavShell> {
     DashboardScreen(),                    // tab 0: 今日
     SenseiScreen(),                        // tab 1: AI Sensei — Phase 4
     WritingScreen(),                      // tab 2: 練習
-    _PlaceholderPage(label: '私'),        // tab 3: Profile — Phase 5
+    ProfileScreen(),                       // tab 3: Profile — Phase 5
   ];
 
   @override
