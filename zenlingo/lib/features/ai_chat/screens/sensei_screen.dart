@@ -26,20 +26,25 @@ class _SenseiScreenState extends ConsumerState<SenseiScreen> {
     if (text.isEmpty) return;
     _controller.clear();
     ref.read(chatProvider.notifier).sendMessage(text);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scrollController.hasClients) {
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-        );
-      }
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     final chatState = ref.watch(chatProvider);
+
+    ref.listen(chatProvider, (prev, next) {
+      next.whenData((_) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (_scrollController.hasClients) {
+            _scrollController.animateTo(
+              _scrollController.position.maxScrollExtent,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut,
+            );
+          }
+        });
+      });
+    });
 
     return Scaffold(
       appBar: AppBar(title: const Text('AI SENSEI')),
@@ -83,7 +88,7 @@ class _SenseiScreenState extends ConsumerState<SenseiScreen> {
                                   style:
                                       const TextStyle(color: Colors.white),
                                 ),
-                                if (!isUser)
+                                if (!isUser && msg.content.isNotEmpty)
                                   IconButton(
                                     icon: const Icon(Icons.volume_up,
                                         size: 16, color: Colors.white70),
