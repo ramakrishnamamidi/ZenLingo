@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/database/app_database.dart';
+import '../../data/database/daos/chat_dao.dart';
 import '../../data/database/daos/session_dao.dart';
 import '../../data/database/daos/srs_dao.dart';
 import '../../data/database/daos/stroke_dao.dart';
@@ -21,4 +22,8 @@ final sessionDaoProvider = Provider<SessionDao>((ref) {
 
 final strokeDaoProvider = Provider<StrokeDao>((ref) {
   return ref.watch(databaseProvider).strokeDao;
+});
+
+final chatDaoProvider = Provider<ChatDao>((ref) {
+  return ref.watch(databaseProvider).chatDao;
 });
