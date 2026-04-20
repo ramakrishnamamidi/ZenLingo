@@ -1,5 +1,9 @@
+import 'dart:ffi';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sqlite3/open.dart';
 
 import 'core/theme/zen_theme.dart';
 import 'features/ai_chat/screens/sensei_screen.dart';
@@ -9,6 +13,9 @@ import 'features/srs/screens/review_screen.dart';
 import 'features/writing/screens/writing_screen.dart';
 
 void main() {
+  if (Platform.isAndroid) {
+    open.overrideFor(OperatingSystem.android, () => DynamicLibrary.process());
+  }
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const ProviderScope(child: ZenApp()));
 }
