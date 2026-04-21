@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:drift/drift.dart';
-import 'package:drift_sqflite/drift_sqflite.dart';
+import 'package:drift/native.dart';
 import 'package:flutter/foundation.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 
 import 'tables/vocabulary_cards.dart';
 import 'tables/review_sessions.dart';
@@ -45,5 +49,9 @@ QueryExecutor openConnection() {
   if (kIsWeb) {
     throw UnimplementedError('Web support added in Phase 5');
   }
-  return SqfliteQueryExecutor.inDatabaseFolder(path: 'zenlingo.db');
+  return LazyDatabase(() async {
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File(p.join(dir.path, 'zenlingo.db'));
+    return NativeDatabase.createInBackground(file);
+  });
 }
