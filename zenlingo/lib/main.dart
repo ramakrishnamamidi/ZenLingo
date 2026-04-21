@@ -15,7 +15,13 @@ import 'features/writing/screens/writing_screen.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isAndroid) {
-    open.overrideFor(OperatingSystem.android, () => DynamicLibrary.open('libsqlite3.so'));
+    open.overrideFor(OperatingSystem.android, () {
+      try {
+        return DynamicLibrary.open('libsqlite3.so');
+      } catch (_) {
+        return DynamicLibrary.process();
+      }
+    });
   }
   runApp(const ProviderScope(child: ZenApp()));
 }

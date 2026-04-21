@@ -53,7 +53,18 @@ class _SenseiScreenState extends ConsumerState<SenseiScreen> {
           Expanded(
             child: chatState.when(
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (e, _) => Center(child: Text('Error: $e')),
+              error: (e, _) => Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text('Something went wrong'),
+                    TextButton(
+                      onPressed: () => ref.invalidate(chatProvider),
+                      child: const Text('Try again'),
+                    ),
+                  ],
+                ),
+              ),
               data: (messages) => messages.isEmpty
                   ? const Center(child: Text('Ask me about Japanese culture!'))
                   : ListView.builder(
