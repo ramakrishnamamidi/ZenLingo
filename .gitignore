@@ -1,2 +1,4 @@
+docs/
 local_docs/
 .worktrees/
+.claude/
