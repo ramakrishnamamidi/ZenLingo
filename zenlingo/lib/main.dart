@@ -1,9 +1,5 @@
-import 'dart:ffi';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sqlite3/open.dart';
 
 import 'core/theme/zen_theme.dart';
 import 'features/ai_chat/screens/sensei_screen.dart';
@@ -14,15 +10,6 @@ import 'features/writing/screens/writing_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  if (Platform.isAndroid) {
-    open.overrideFor(OperatingSystem.android, () {
-      try {
-        return DynamicLibrary.open('libsqlite3.so');
-      } catch (_) {
-        return DynamicLibrary.process();
-      }
-    });
-  }
   runApp(const ProviderScope(child: ZenApp()));
 }
 
