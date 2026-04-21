@@ -2,3 +2,5 @@ docs/
 local_docs/
 .worktrees/
 .claude/
+.pub-cache/
+zenlingo/android/build/
