@@ -13,10 +13,10 @@ import 'features/srs/screens/review_screen.dart';
 import 'features/writing/screens/writing_screen.dart';
 
 void main() {
-  if (Platform.isAndroid) {
-    open.overrideFor(OperatingSystem.android, () => DynamicLibrary.process());
-  }
   WidgetsFlutterBinding.ensureInitialized();
+  if (Platform.isAndroid) {
+    open.overrideFor(OperatingSystem.android, () => DynamicLibrary.open('libsqlite3.so'));
+  }
   runApp(const ProviderScope(child: ZenApp()));
 }
 
